@@ -26,6 +26,7 @@ pub struct NewGRFGeneral {
     version: u32,
     grfid: String,
     name: String,
+    url: String,
     description: String,
 }
 
@@ -195,7 +196,7 @@ fn write_segments(output: &mut Output, options: NewGRFOptions) -> Result<(), Str
     /* Initial sprite; should be 4 in length, ignored by OpenTTD. */
     output.buffer.extend([0x04, 0x00, 0x00, 0x00, 0xff, 0x02, 0x00, 0x00, 0x00]);
 
-    Action14::Url { url: &"https://truebrain.github.io/TrueGRF/".to_string() }.write(output);
+    Action14::Url { url: &options.general.url.to_string() }.write(output);
     Action14::Palette { palette: 'D' }.write(output);
     Action8::General { grfid: &options.general.grfid.to_string(), name: &options.general.name, description: &options.general.description }.write(output);
 
