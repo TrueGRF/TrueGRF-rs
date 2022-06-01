@@ -60,6 +60,16 @@ jobs:
       run: |
         cargo install wasm-pack
 
+    - name: Update version to the release version
+      run: |
+        # Remove the "v" from the version.
+        VERSION=$(echo ${{ github.ref_name }} | cut -b2-)
+        echo "Version: ${VERSION}"
+
+        # Use sed for now, as https://github.com/rust-lang/cargo/issues/7722 isn't in stable yet.
+        sed -i 's/version = "0.0.0-git"/version = "'${VERSION}'"/' Cargo.toml
+        sed -i 's/version = "0.0.0-git"/version = "'${VERSION}'"/' Cargo.lock
+
     - name: Create NPM package
       run: |
         wasm-pack build --release --target web
@@ -75,6 +85,6 @@ jobs:
 
     - name: Publish to crates.io
       run: |
-        cargo publish
+        cargo publish --allow-dirty
       env:
         CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_IO_TOKEN }}
