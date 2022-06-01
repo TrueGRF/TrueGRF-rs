@@ -1,6 +1,6 @@
 [package]
 name = "truegrf"
-version = "1.0.0"
+version = "0.0.0-git"
 authors = ["Patric Stout <truebrain@openttd.org>"]
 license = "GPL-2.0-only"
 description = "TrueGRF YAML to GRF compiler"
