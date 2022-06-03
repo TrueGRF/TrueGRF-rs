@@ -3,7 +3,7 @@ use serde::{Serialize, Deserialize};
 use super::sprite::NewGRFSpriteContainer;
 
 #[allow(non_snake_case)]
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct NewGRFIndustryTileSprite {
     pub sprite: NewGRFSpriteContainer,
     pub drawType: String,
@@ -11,13 +11,13 @@ pub struct NewGRFIndustryTileSprite {
 }
 
 #[allow(non_snake_case)]
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct NewGRFIndustryTile {
     pub sprites: Vec<NewGRFIndustryTileSprite>,
 }
 
 #[allow(non_snake_case)]
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct NewGRFIndustry {
     pub id: u8,
     pub available: bool,
