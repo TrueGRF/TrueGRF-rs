@@ -48,7 +48,7 @@ fn main() {
     /* Read the general part. */
     let fp = std::fs::File::open("truegrf.yaml").unwrap();
 
-    let mut options = grf::NewGRFOptions {
+    let mut options = grf::NewGRFConfig {
         general: serde_yaml::from_reader(fp).unwrap(),
         cargoes: Vec::new(),
         industries: Vec::new(),
