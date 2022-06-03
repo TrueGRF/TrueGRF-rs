@@ -45,7 +45,7 @@ fn load_sprite_bytes_wrapper(filename: &str) -> Vec<u8> {
 
 #[wasm_bindgen]
 pub fn compile(options_raw: &JsValue) -> NewGRFResult {
-    let options: grf::NewGRFOptions = options_raw.into_serde().unwrap();
+    let options: grf::NewGRFConfig = options_raw.into_serde().unwrap();
 
     match grf::write_grf(options, &load_sprite_bytes_wrapper) {
         Ok(output) => NewGRFResult {
