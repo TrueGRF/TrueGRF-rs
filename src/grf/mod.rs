@@ -1,7 +1,7 @@
-use serde::{Serialize, Deserialize};
 use std::collections::HashMap;
 
 mod actions;
+mod config;
 
 use actions::{
     Action0,
@@ -21,99 +21,17 @@ use actions::{
     Variable,
 };
 
-#[derive(Serialize, Deserialize, Debug, Default)]
-pub struct NewGRFGeneral {
-    version: u32,
-    grfid: String,
-    name: String,
-    url: String,
-    description: String,
-}
-
-#[allow(non_snake_case)]
-#[derive(Serialize, Deserialize, Debug, Default)]
-pub struct NewGRFSprite {
-    filename: String,
-    left: i16,
-    top: i16,
-}
-
-#[allow(non_snake_case)]
-#[derive(Serialize, Deserialize, Debug, Default)]
-struct NewGRFDefaultSprite {
-    id: u32,
-}
-
-#[allow(non_snake_case)]
-#[derive(Serialize, Deserialize, Debug)]
-#[serde(untagged)]
-enum NewGRFSpriteContainer {
-    Sprite(NewGRFSprite),
-    DefaultSprite(NewGRFDefaultSprite),
-}
-impl Default for NewGRFSpriteContainer {
-    fn default() -> Self { NewGRFSpriteContainer::DefaultSprite(NewGRFDefaultSprite { id: 0 } ) }
-}
-
-#[allow(non_snake_case)]
-#[derive(Serialize, Deserialize, Debug, Default)]
-struct NewGRFIndustryTileSprite {
-    sprite: NewGRFSpriteContainer,
-    drawType: String,
-    alwaysDraw: bool,
-}
-
-#[allow(non_snake_case)]
-#[derive(Serialize, Deserialize, Debug, Default)]
-struct NewGRFIndustryTile {
-    sprites: Vec<NewGRFIndustryTileSprite>,
-}
-
-#[allow(non_snake_case)]
-#[derive(Serialize, Deserialize, Debug, Default)]
-pub struct NewGRFIndustry {
-    id: u8,
-    available: bool,
-    name: String,
-    r#type: String,
-    fundCostMultiplier: u8,
-    probabilityMapGen: u8,
-    probabilityInGame: u8,
-    colour: u8,
-    prospectChance: u8,  // Scale from 0 to 100
-    layout: Vec<Vec<Vec<i32>>>,
-    cargoAcceptance: Vec<String>,
-    cargoProduction: Vec<String>,
-    placement: String,
-    tiles: Vec<NewGRFIndustryTile>,
-    callbacks: String,
-}
-
-#[allow(non_snake_case)]
-#[derive(Serialize, Deserialize, Debug, Default)]
-pub struct NewGRFCargo {
-    id: u8,
-    available: bool,
-    name: String,
-    longName: String,
-    unitName: String,
-    label: String,
-    abbreviation: String,
-    classes: u16,
-    weight: u8,
-    colour: u8,
-    penaltyLowerBound: u8,
-    penaltyLength: u8,
-    price: u32,
-    sprite: NewGRFSprite,
-}
-
-#[derive(Serialize, Deserialize, Debug, Default)]
-pub struct NewGRFOptions {
-    pub general: NewGRFGeneral,
-    pub cargoes: Vec<NewGRFCargo>,
-    pub industries: Vec<NewGRFIndustry>,
-}
+pub use config::{
+    NewGRFCargo,
+    NewGRFDefaultSprite,
+    NewGRFGeneral,
+    NewGRFIndustry,
+    NewGRFIndustryTile,
+    NewGRFIndustryTileSprite,
+    NewGRFOptions,
+    NewGRFSprite,
+    NewGRFSpriteContainer,
+};
 
 pub struct Output<'a> {
     buffer: Vec<u8>,
