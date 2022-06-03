@@ -10,7 +10,7 @@ pub use sprite::{
     NewGRFSpriteContainer,
 };
 
-#[derive(Serialize, Deserialize, Debug, Default)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct NewGRFConfig {
     pub general: general::NewGRFGeneral,
     pub cargoes: Vec<cargo::NewGRFCargo>,
