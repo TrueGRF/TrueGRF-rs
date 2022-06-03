@@ -23,6 +23,8 @@ use actions::{
 
 pub use config::{
     NewGRFConfig,
+    NewGRFConfigIndustry,
+    NewGRFGeneral,
     NewGRFSprite,
     NewGRFSpriteContainer,
 };
@@ -104,7 +106,7 @@ fn industry_callback(output: &mut Output, cb: u8, rpn: &mut Action2RPN::Function
     write_rpn_chain(output, cb, &rpn.chain, true);
 }
 
-fn write_segments(output: &mut Output, options: NewGRFConfig) -> Result<(), String> {
+fn write_segments(output: &mut Output, options: NewGRFConfigIndustry) -> Result<(), String> {
     /* Initial sprite; should be 4 in length, ignored by OpenTTD. */
     output.buffer.extend([0x04, 0x00, 0x00, 0x00, 0xff, 0x02, 0x00, 0x00, 0x00]);
 
@@ -387,7 +389,9 @@ fn write_segments(output: &mut Output, options: NewGRFConfig) -> Result<(), Stri
 pub fn write_grf(options: NewGRFConfig, load_sprite_bytes: &dyn Fn(&str) -> Vec<u8>) -> Result<Vec<u8>, String> {
     let mut output = Output { buffer: Vec::new(), string_counter: 0xdc00, sprites: Vec::new(), load_sprite_bytes };
 
-    write_segments(&mut output, options)?;
+    match options {
+        NewGRFConfig::industry(options) => write_segments(&mut output, options)?,
+    };
 
     let mut grf = Vec::new();
     /* Write GRF container version 2 header. */
