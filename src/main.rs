@@ -48,33 +48,45 @@ fn main() {
     /* Read the general part. */
     let fp = std::fs::File::open("truegrf.yaml").unwrap();
 
-    let mut options = grf::NewGRFConfig {
-        general: serde_yaml::from_reader(fp).unwrap(),
-        cargoes: Vec::new(),
-        industries: Vec::new(),
+    let general: grf::NewGRFGeneral = serde_yaml::from_reader(fp).unwrap();
+
+    let options = match general.r#type.as_str() {
+        "industry" => {
+            let mut options = grf::NewGRFConfigIndustry {
+                general: general,
+                cargoes: Vec::new(),
+                industries: Vec::new(),
+            };
+
+            /* Read the cargoes. */
+            std::fs::read_dir("cargoes").unwrap().for_each(|entry| {
+                let entry = entry.unwrap();
+                let path = entry.path();
+
+                if path.is_file() && path.extension().unwrap() == "yaml" {
+                    let fp = std::fs::File::open(path).unwrap();
+                    options.cargoes.push(serde_yaml::from_reader(fp).unwrap());
+                }
+            });
+
+            /* Read the industries. */
+            std::fs::read_dir("industries").unwrap().for_each(|entry| {
+                let entry = entry.unwrap();
+                let path = entry.path();
+
+                if path.is_file() && path.extension().unwrap() == "yaml" {
+                    let fp = std::fs::File::open(path).unwrap();
+                    options.industries.push(serde_yaml::from_reader(fp).unwrap());
+                }
+            });
+
+            grf::NewGRFConfig::industry(options)
+        }
+        _ => {
+            println!("Unsupported TrueGRF type '{}'", general.r#type);
+            return;
+        }
     };
-
-    /* Read the cargoes. */
-    std::fs::read_dir("cargoes").unwrap().for_each(|entry| {
-        let entry = entry.unwrap();
-        let path = entry.path();
-
-        if path.is_file() && path.extension().unwrap() == "yaml" {
-            let fp = std::fs::File::open(path).unwrap();
-            options.cargoes.push(serde_yaml::from_reader(fp).unwrap());
-        }
-    });
-
-    /* Read the industries. */
-    std::fs::read_dir("industries").unwrap().for_each(|entry| {
-        let entry = entry.unwrap();
-        let path = entry.path();
-
-        if path.is_file() && path.extension().unwrap() == "yaml" {
-            let fp = std::fs::File::open(path).unwrap();
-            options.industries.push(serde_yaml::from_reader(fp).unwrap());
-        }
-    });
 
     /* Create the GRF. */
     match grf::write_grf(options, &load_sprite_bytes) {

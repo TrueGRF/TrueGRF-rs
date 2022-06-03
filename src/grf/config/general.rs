@@ -7,4 +7,5 @@ pub struct NewGRFGeneral {
     pub name: String,
     pub url: String,
     pub description: String,
+    pub r#type: String,
 }
