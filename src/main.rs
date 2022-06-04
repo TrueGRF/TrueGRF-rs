@@ -82,6 +82,25 @@ fn main() {
 
             grf::NewGRFConfig::industry(options)
         }
+        "townname" => {
+            let mut options = grf::NewGRFConfigTownname {
+                general: general,
+                townnames: Vec::new(),
+            };
+
+            /* Read the townnames. */
+            std::fs::read_dir("townnames").unwrap().for_each(|entry| {
+                let entry = entry.unwrap();
+                let path = entry.path();
+
+                if path.is_file() && path.extension().unwrap() == "yaml" {
+                    let fp = std::fs::File::open(path).unwrap();
+                    options.townnames.push(serde_yaml::from_reader(fp).unwrap());
+                }
+            });
+
+            grf::NewGRFConfig::townname(options)
+        }
         _ => {
             println!("Unsupported TrueGRF type '{}'", general.r#type);
             return;
