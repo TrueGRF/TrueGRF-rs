@@ -6,6 +6,8 @@ pub mod action2_rpn;
 mod action3;
 mod action8;
 mod action14;
+#[allow(non_snake_case)]
+mod actionF;
 mod varaction2;
 pub mod variable;
 
@@ -17,6 +19,7 @@ pub use action2_rpn as Action2RPN;
 pub use action3::Action3;
 pub use action8::Action8;
 pub use action14::Action14;
+pub use actionF::{ActionF, ActionFId, ActionFPart, ActionFName};
 pub use varaction2::{VarAction2, VarAction2Chain, VarAction2Switch, VarAction2Operator};
 pub use variable as Variable;
 

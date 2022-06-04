@@ -52,9 +52,6 @@ fn industry_callback(output: &mut Output, cb: u8, rpn: &mut Action2RPN::Function
 }
 
 pub fn write_industry_segments(output: &mut Output, options: NewGRFConfigIndustry) -> Result<(), String> {
-    /* Initial sprite; should be 4 in length, ignored by OpenTTD. */
-    output.buffer.extend([0x04, 0x00, 0x00, 0x00, 0xff, 0x02, 0x00, 0x00, 0x00]);
-
     Action14::Url { url: &options.general.url.to_string() }.write(output);
     Action14::Palette { palette: 'D' }.write(output);
     Action8::General { grfid: &options.general.grfid.to_string(), name: &options.general.name, description: &options.general.description }.write(output);
@@ -324,9 +321,6 @@ pub fn write_industry_segments(output: &mut Output, options: NewGRFConfigIndustr
         Action0::Industry::Flags { id: industry.id, flags }.write(output);
         Action0::Industry::CallbackFlags { id: industry.id, flags: callback_flags }.write(output);
     }
-
-    /* End-of-data-section marker. */
-    output.buffer.extend(b"\x00\x00\x00\x00");
 
     Ok(())
 }
