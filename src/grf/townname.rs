@@ -65,7 +65,7 @@ fn create_part<'a>(part: &'a NewGRFTownnamePart, firstbit: &mut u8, subparts_ids
 pub fn write_townname_segments(output: &mut Output, options: NewGRFConfigTownname) -> Result<(), String> {
     Action14::Url { url: &options.general.url.to_string() }.write(output);
     Action14::Palette { palette: 'D' }.write(output);
-    Action8::General { grfid: &options.general.grfid.to_string(), name: &options.general.name, description: &options.general.description }.write(output);
+    Action8::General { grfid: &hex::decode(options.general.grfid).unwrap(), name: &options.general.name, description: &options.general.description }.write(output);
 
     let mut id = 0;
 

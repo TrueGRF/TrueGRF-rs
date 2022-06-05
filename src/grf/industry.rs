@@ -54,7 +54,7 @@ fn industry_callback(output: &mut Output, cb: u8, rpn: &mut Action2RPN::Function
 pub fn write_industry_segments(output: &mut Output, options: NewGRFConfigIndustry) -> Result<(), String> {
     Action14::Url { url: &options.general.url.to_string() }.write(output);
     Action14::Palette { palette: 'D' }.write(output);
-    Action8::General { grfid: &options.general.grfid.to_string(), name: &options.general.name, description: &options.general.description }.write(output);
+    Action8::General { grfid: &hex::decode(options.general.grfid).unwrap(), name: &options.general.name, description: &options.general.description }.write(output);
 
     /* Disable all default cargoes. */
     for cargo_id in 0..=11 {
