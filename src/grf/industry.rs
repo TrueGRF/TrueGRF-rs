@@ -124,11 +124,17 @@ pub fn write_industry_segments(output: &mut Output, options: NewGRFConfigIndustr
         let mut cargo_production = Vec::new();
         let mut cargo_production_multiplier = Vec::new();
         for cargo in &industry.cargoProduction {
+            if !ctt.contains_key(cargo) {
+                return Err(format!("Industry '{}' has {} in cargo-production, which is a cargo that doesn't exist.", industry.name, cargo))
+            }
             cargo_production.push(ctt[cargo]);
             cargo_production_multiplier.push(0);
         }
         let mut cargo_acceptance = Vec::new();
         for cargo in &industry.cargoAcceptance {
+            if !ctt.contains_key(cargo) {
+                return Err(format!("Industry '{}' has {} in cargo-acceptance, which is a cargo that doesn't exist.", industry.name, cargo))
+            }
             cargo_acceptance.push(ctt[cargo]);
         }
 
